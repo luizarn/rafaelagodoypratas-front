@@ -1,22 +1,28 @@
 import styled from 'styled-components';
 import logo from "../../assets/images/white_logo.png"
 import { Link } from "react-router-dom"
+import useNameUser from '../../hooks/useNameUser';
 
 export default function NavBar() {
-    return (
-        <StyleNavBar>
+    const userName = useNameUser();
 
-          <img src={logo} alt="Logotipo" />
-      <input type="text" placeholder="Olá, o que você está buscando?" />
-  
-  <ContainerIcons>
-  <ion-icon name="chatbubbles-outline"></ion-icon>
-  <Link to="/sign-in">
-  <ion-icon name="person-circle-outline"></ion-icon>
-  </Link>
-  <ion-icon name="bag-handle-outline"></ion-icon>
-  </ContainerIcons>
-        </StyleNavBar>
+    return (
+                <StyleNavBar>
+                    <img src={logo} alt="Logotipo" />
+                    <input type="text" placeholder="Olá, o que você está buscando?" />
+                    <ContainerNameandIcons>
+                        <ContainerIcons>
+                            <ion-icon name="chatbubbles-outline"></ion-icon>
+                            <Link to="/sign-in">
+                                <ion-icon name="person-circle-outline"></ion-icon>
+                            </Link>
+                            <ion-icon name="bag-handle-outline"></ion-icon>
+                        </ContainerIcons>
+                        {userName ? <p>Olá, {userName}! </p> : ""}
+                    </ContainerNameandIcons>
+                </StyleNavBar>
+        
+ 
     )
 }
 
@@ -59,4 +65,20 @@ const ContainerIcons = styled.div`
         color: #6CBFA6;
     }
 `
+const ContainerNameandIcons = styled.div`
 
+display:flex;
+flex-direction:column;
+align-items: center;
+    text-align: center;
+    p{
+        margin-top: 10px;
+        font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #6CBFA6;
+    }
+`

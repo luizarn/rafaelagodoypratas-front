@@ -1,7 +1,16 @@
 import styled from 'styled-components';
+import useIsOwnerUser from '../../hooks/useIsOwnerUser';
+import { Link } from "react-router-dom"
 
 export default function Dashboard() {
+const isOwner = useIsOwnerUser();
+
   return (
+    <>
+    {isOwner === false ? "" : (
+    <GoToPageAdminLink to="/admin">
+      Ir para a página de adminstrador
+     </GoToPageAdminLink>)}
     <StyleDashboard>
       <span>
       <h1>Início</h1>
@@ -12,6 +21,7 @@ export default function Dashboard() {
       <h1>Contato</h1>
       </span>
     </StyleDashboard>
+    </>
   )
 }
 
@@ -54,5 +64,19 @@ color: #262626;
         color: #6CBFA6;
     }
 `
-
+const GoToPageAdminLink = styled(Link)`
+background-color: #6CBFA6;
+height:30px;
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+display: flex;
+align-items: center;
+text-align: center;
+color: #262626;
+text-decoration: none;
+padding-left: 10px;
+`
 

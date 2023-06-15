@@ -1,11 +1,21 @@
 import styled from "styled-components"
+import useNameUser from '../../hooks/useNameUser';
+import { Link } from "react-router-dom";
 
-export default function Home() {
+export default function Admin() {
+
+const userName = useNameUser();
+console.log(userName)
 
  return (
+  <>
+  <GoToPageAdminLink to="/">
+  Ir para a página inicial do site
+ </GoToPageAdminLink>
     <Container>
-      <p>Em breve a página principal estará disponível...</p>
+      <p>OLá, {userName}</p>
     </Container>
+    </>
   )
 }
 
@@ -40,4 +50,20 @@ const Container = styled.div`
       margin-top: 100px;
     }
   }
+`
+
+const GoToPageAdminLink = styled(Link)`
+background-color: #6CBFA6;
+height:30px;
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+display: flex;
+align-items: center;
+text-align: center;
+color: #262626;
+text-decoration: none;
+padding-left: 10px;
 `
