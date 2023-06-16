@@ -32,10 +32,7 @@ border: 1px solid #ACE4D3;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 3px;
 box-sizing: border-box;
-padding-right: 40px;
-padding-top:30px;
-padding-bottom:15px;
-padding-left: 5px;
+padding: 30px 40px 15px 5px;
 `
 
 const ContainerInfos = styled.div`

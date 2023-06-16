@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard'
 import StyleBranch from './components/StyleBranch'
 import Home from './pages/Home'
 import Admin from './pages/Admin'
+import Createroduct from './pages/CreateProduct'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/sign-in" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/admin/*" element={<Admin />} />
+          <Route path="/admin/products/new" element={<Createroduct />} />
         </Routes>
         <Footer />
       </BrowserRouter>
