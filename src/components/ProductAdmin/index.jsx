@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
+import useToken from '../../hooks/useToken';
+import axios from 'axios';
 // eslint-disable-next-line react/prop-types
-export default function ListProductsEdition({  setSelectedProductTitle, productId, setSelectedProductId, setEditSelected, image, title, description, price, storage, category, tag }) {
-
+export default function ListProductsEdition({ setAttProducts, setSelectedProductTitle, productId, setSelectedProductId, setEditSelected, image, title, description, price, storage, category, tag }) {
+  const token = useToken();
 
   function handleEdit(){
     console.log(title)
@@ -13,6 +14,22 @@ export default function ListProductsEdition({  setSelectedProductTitle, productI
     setSelectedProductTitle(title)
   }
 
+async function deleteProduct(){
+    try {
+      if (confirm("Tem certeza de que deseja excluir este produto?"))
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}/produtos/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  setAttProducts(true)
+} catch (err) {
+  alert(err.response.data.message);
+}
+}
 
     return (
                 <ContainerStyle>
@@ -30,7 +47,7 @@ export default function ListProductsEdition({  setSelectedProductTitle, productI
                         <ContainerIcons>
                         <ion-icon onClick={handleEdit}
                         name="create-outline"></ion-icon>
-                        <ion-icon name="trash-outline"></ion-icon>
+                        <ion-icon onClick={deleteProduct} name="trash-outline"></ion-icon>
                         </ContainerIcons>
                 </ContainerStyle>
  
