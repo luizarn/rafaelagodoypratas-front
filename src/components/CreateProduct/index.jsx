@@ -41,7 +41,7 @@ async function addProduct(e) {
   const formData = new FormData();
   formData.append('title', title);
   formData.append('description', description);
-  formData.append('price', parseInt(price));
+  formData.append('price', parseFloat(price).toFixed(2));
   formData.append('quantity', parseInt(quantity));
   formData.append('photo', image);
   formData.append('categoryId', parseInt(category));
