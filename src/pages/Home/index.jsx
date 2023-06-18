@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 export default function Home() {
+
  return (
     <Container>
       <p>Em breve a página principal estará disponível...</p>
