@@ -1,6 +1,19 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-export default function ListProductsEdition({ image, title, description, price, storage, category, tag }) {
+
+// eslint-disable-next-line react/prop-types
+export default function ListProductsEdition({  setSelectedProductTitle, productId, setSelectedProductId, setEditSelected, image, title, description, price, storage, category, tag }) {
+
+
+  function handleEdit(){
+    console.log(title)
+    setEditSelected(true)
+    setSelectedProductId(productId)
+    
+    setSelectedProductTitle(title)
+  }
+
+
     return (
                 <ContainerStyle>
                     <ImageInfo>
@@ -15,7 +28,8 @@ export default function ListProductsEdition({ image, title, description, price, 
                     </ContainerInfos>
                     </ImageInfo>
                         <ContainerIcons>
-                        <ion-icon name="create-outline"></ion-icon>
+                        <ion-icon onClick={handleEdit}
+                        name="create-outline"></ion-icon>
                         <ion-icon name="trash-outline"></ion-icon>
                         </ContainerIcons>
                 </ContainerStyle>

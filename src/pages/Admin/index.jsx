@@ -6,70 +6,99 @@ import ListProductsEdition from "../../components/ProductAdmin";
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
+import CreateProduct from "../../components/CreateProduct";
+import EditProduct from "../../components/EditProduct";
 
 export default function Admin() {
-  const [products, setProducts] = useState(null)
+  const [products, setProducts] = useState(null);
+  const [addSelected, setAddSelected] = useState(false);
+  const [editSelected, setEditSelected] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [selectedProductTitle, setSelectedProductTitle] = useState(null);
+  const [attProducts, setAttProducts] = useState(false);
 
 const userName = useNameUser();
-console.log(products)
+console.log(selectedProductTitle)
 
 useEffect(() => {
   const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/products`);
   response.then((res) => {
     setProducts(res.data);
+    setAttProducts(false)
   });
   response.catch((err) => console.log(err));
-}, []);
+}, [attProducts]);
+
 
  return (
-  <>
-  <GoToPageAdminLink to="/">
-  Ir para a página inicial do site
- </GoToPageAdminLink>
- <StyleNavBar>
-                    <img src={logo} alt="Logotipo" />                  
-                    
-                </StyleNavBar>
-    <Container>
-      <p>OLá, {userName}! você está na página de edição dos seus produtos :)</p>
-      <ContainerProducts>
-        <TitleandAdd>
-        <h2>PRODUTOS</h2>
-        <div> <h3>Adicionar produto</h3>
-        <Link to="/admin/products/new">
-          <ion-icon name="add-circle-outline"></ion-icon>
-          </Link>
-          </div>
-        </TitleandAdd>
-
-      <input type="text" placeholder="Buscar produtos por nome" />
-      {!products || products && products.length === 0 ? (
-        <p>Não há produtos, adicione um produto clicando no ícone de adicionar acima!</p>) : (
- products.map((p) => (
-  <ListProductsEdition 
-    key={p.id}
-    image={p.publicUrl}
-    title={p.title}
-    description={p.description}
-    price={p.price}
-    storage={p.quantity}
-    category={p.Category.title}
-    tag={p.Tag.title}
-/> 
-))
-        )}
-      </ContainerProducts>
-    </Container>
+<>
+      <GoToPageAdminLink to="/">Ir para a página inicial do site</GoToPageAdminLink>
+      <StyleNavBar>
+        <img src={logo} alt="Logotipo" />
+      </StyleNavBar>
+      {addSelected ? (
+        <CreateProduct setAddSelected={setAddSelected} />
+      ) : editSelected ? (
+        <EditProduct 
+        setEditSelected={setEditSelected}
+        selectedProductId={selectedProductId}
+        selectedProductTitle={selectedProductTitle}
+        setAttProducts={setAttProducts}
+        />
+      ) : (
+        <Container>
+          <p>
+            OLá, {userName}! você está na página de edição e visualização dos seus produtos :)
+          </p>
+          <ContainerProducts>
+            <TitleandAdd>
+              <h2>PRODUTOS</h2>
+              <div>
+                <h3>Adicionar produto</h3>
+                <ion-icon
+                  onClick={() => setAddSelected(true)}
+                  name="add-circle-outline"
+                ></ion-icon>
+              </div>
+            </TitleandAdd>
+            <input type="text" placeholder="Buscar produtos por nome" />
+            {!products || products.length === 0 ? (
+              <div style={{ height: "350px" }}>
+                <p>
+                  Não há produtos, adicione um produto clicando no ícone de
+                  adicionar acima!
+                </p>
+              </div>
+            ) : (
+              products.map((p) => (
+                <ListProductsEdition
+                  key={p.id}
+                  setAttProducts={setAttProducts}
+                  setEditSelected={setEditSelected}
+                  setSelectedProductId={setSelectedProductId}
+                  setSelectedProductTitle={setSelectedProductTitle}
+                  productId={p.id}
+                  image={p.publicUrl}
+                  title={p.title}
+                  description={p.description}
+                  price={p.price}
+                  storage={p.quantity}
+                  category={p.Category.title}
+                  tag={p.Tag.title}
+                />
+              ))
+            )}
+          </ContainerProducts>
+        </Container>
+      )}
     </>
-  )
+  );
 }
-
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  /* height: ${({ products }) => (!products || products && products.length === 0 ? "100vh" : "100%")}; */
   margin: 10px 10px;
   p{
     font-family: 'Ubuntu Mono';
