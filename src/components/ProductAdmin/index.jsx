@@ -38,7 +38,7 @@ async function deleteProduct(){
                     <ContainerInfos>
                         <h1><span>Titulo: {title}</span></h1>
                         <h1><span>Descrição:</span> {description}</h1>
-                        <h1><span>Preço:</span> R$ {price}</h1>
+                        <h1><span>Preço:</span> R$ {parseFloat(price).toFixed(2).replace('.', ',')}</h1>
                         <h1><span>Estoque:</span> {storage}</h1>
                         <h1><span>Categoria:</span> {category}</h1>
                         <h1><span>Tag:</span> {tag}</h1>
@@ -58,7 +58,7 @@ ListProductsEdition.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
+  price: PropTypes.string.isRequired,
   storage: PropTypes.number.isRequired,
   category: PropTypes.string.isRequired,
   tag: PropTypes.string.isRequired,

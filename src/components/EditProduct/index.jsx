@@ -4,7 +4,6 @@ import axios from "axios";
 import { useEffect } from "react";
 import useToken from '../../hooks/useToken';
 
-
 // eslint-disable-next-line react/prop-types
 export default function EditProduct({ setAttProducts, setEditSelected, selectedProductId, selectedProductTitle }) {
   const [categories, setCategories] = useState([]);
@@ -58,7 +57,7 @@ export default function EditProduct({ setAttProducts, setEditSelected, selectedP
       updatedFields: {
       title,
       description,
-      price: parseInt(price),
+      price: parseFloat(price).toFixed(2).replace(',', '.'),
       quantity: parseInt(quantity),
       categoryId: parseInt(category),
       tagId: parseInt(tag),

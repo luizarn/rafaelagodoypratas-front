@@ -1,10 +1,41 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import logo from "../../assets/images/background.jpeg"
+import { useEffect } from 'react';
+import axios from 'axios';
 import useIsOwnerUser from '../../hooks/useIsOwnerUser';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
+  const [showOptions, setShowOptions] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [hovered, setHovered] = useState(false);
+  const [options, setOptions] = useState({});
   const isOwner = useIsOwnerUser();
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+    setShowOptions(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
+
+  const handleOptionsMouseLeave = () => {
+    setShowOptions(false);
+  };
+
+
+useEffect(() => {
+  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
+  response.then((res) => {
+    setOptions(res.data);
+    console.log(res.data)
+    console.log(options)
+  });
+  response.catch((err) => console.log(err));
+}, []);
 
   return (
     <>
@@ -15,14 +46,30 @@ export default function Dashboard() {
     <Container>
       <StyleDashboard>
         <span>
+        <Link to={`/`} style={{ textDecoration: 'none' }}>
           <h1>Início</h1>
+          </Link>
           <div
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             <h1>Produtos</h1>
             <ion-icon name="chevron-down-outline"></ion-icon>
           </div>
           <h1>Contato</h1>
         </span>
+        {showOptions && (
+          <OptionsOverlay
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleOptionsMouseLeave}
+          >
+            {options.map((o) => (
+              <Link to={`/${o.title}`} key={o.title} style={{ textDecoration: 'none' }}>
+            <OptionsText> {o.title}</OptionsText>
+            </Link>
+            ))}
+          </OptionsOverlay>
+        )}
       </StyleDashboard>
       <StyleContainer>
         <span>
@@ -97,6 +144,20 @@ const StyleDashboard = styled.div`
   }
 `;
 
+const OptionsOverlay = styled.div`
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  height: 71px;
+  background-color: #ACE4D3;
+  border: 1px solid #ACE4D3;
+  border-radius: 3px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-around;
+`;
+
 
 const StyleContainer = styled.div`
   display: flex;
@@ -148,20 +209,27 @@ const StyleContainer = styled.div`
   }
 `;
 
+const OptionsText = styled.p`
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-weight: 900;
+  font-size: 20px;
+  color: #ffffff;
+  margin: 14px;
+`;
 
 const GoToPageAdminLink = styled(Link)`
-background-color: #6CBFA6;
-height:30px;
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 12px;
-line-height: 14px;
-display: flex;
-align-items: center;
-text-align: center;
-color: #262626;
-text-decoration: none;
-padding-left: 10px;
-`
-
+  background-color: #6cbfa6;
+  height: 30px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #262626;
+  text-decoration: none;
+  padding-left: 10px;
+`;
