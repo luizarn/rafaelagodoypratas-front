@@ -8,71 +8,76 @@ import useToken from '../../hooks/useToken';
 
 // eslint-disable-next-line react/prop-types
 export default function CreateProduct({ setAddSelected }) {
-const [categories, setCategories] = useState([]);
-const [category, setSelectedCategory] = useState('');
-const [tags, setTags] = useState([]);
-const [tag, setSelectedTag] = useState('');
-const [title, setTitle] = useState('');
-const [description, setDescription] = useState('');
-const [price, setPrice] = useState('');
-const [quantity, setQuantity] = useState('');
-const [image, setImage] = useState('');
-const token = useToken();
-const navigate = useNavigate()
+  const [categories, setCategories] = useState([]);
+  const [category, setSelectedCategory] = useState('');
+  const [tags, setTags] = useState([]);
+  const [tag, setSelectedTag] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [image, setImage] = useState('');
+  const [launch, setLaunch] = useState(false);
+  const [emphasis, setEmphasis] = useState(false);
+  const token = useToken();
+  const navigate = useNavigate();
 
-useEffect(() => {
-  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
-  response.then((res) => {
-    setCategories(res.data);
-  });
-  response.catch((err) => console.log(err));
+  useEffect(() => {
+    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
+    response.then((res) => {
+      setCategories(res.data);
+    });
+    response.catch((err) => console.log(err));
 
-  const result = axios.get(`${import.meta.env.VITE_API_BASE_URL}/tags`);
-  result.then((res) => {
-    setTags(res.data);
-  });
-  result.catch((err) => console.log(err));
-}, []);
+    const result = axios.get(`${import.meta.env.VITE_API_BASE_URL}/tags`);
+    result.then((res) => {
+      setTags(res.data);
+    });
+    result.catch((err) => console.log(err));
+  }, []);
 
+  async function addProduct(e) {
+    e.preventDefault();
 
-async function addProduct(e) {
-  e.preventDefault();
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('price', parseFloat(price).toFixed(2));
+    formData.append('quantity', parseInt(quantity));
+    formData.append('photo', image);
+    formData.append('categoryId', parseInt(category));
+    formData.append('tagId', parseInt(tag));
+    formData.append('launch', launch);
+    formData.append('emphasis', emphasis);
 
-  const formData = new FormData();
-  formData.append('title', title);
-  formData.append('description', description);
-  formData.append('price', parseFloat(price).toFixed(2));
-  formData.append('quantity', parseInt(quantity));
-  formData.append('photo', image);
-  formData.append('categoryId', parseInt(category));
-  formData.append('tagId', parseInt(tag));
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/produtos`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-  try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/produtos`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    console.log(response);
-    console.log(response.data);
-    navigate('/admin');
-    setAddSelected(false)
-  } catch (err) {
-    alert(err.response.data.message);
-    setTitle('');
-    setDescription('');
-    setPrice('');
-    setQuantity('');
-    setImage('');
-    setSelectedCategory('');
-    setSelectedTag('');
+      console.log(response);
+      console.log(response.data);
+      navigate('/admin');
+      setAddSelected(false);
+    } catch (err) {
+      alert(err.response.data.message);
+      setTitle('');
+      setDescription('');
+      setPrice('');
+      setQuantity('');
+      setImage('');
+      setSelectedCategory('');
+      setSelectedTag('');
+      setLaunch(false);
+      setEmphasis(false);
+    }
   }
-}
 
  return (
   <>
@@ -139,6 +144,27 @@ async function addProduct(e) {
           </option>
         ))}
       </StyledSelect>
+      <CheckboxContainer>
+          <CheckboxLabel htmlFor="launch">
+            Lançamento:
+          </CheckboxLabel>
+          <StyledCheckbox
+            type="checkbox"
+            id="launch"
+            checked={launch}
+            onChange={(e) => setLaunch(e.target.checked)}
+          />
+
+          <CheckboxLabel htmlFor="emphasis">
+            Em Destaque:
+          </CheckboxLabel>
+          <StyledCheckbox
+            type="checkbox"
+            id="emphasis"
+            checked={emphasis}
+            onChange={(e) => setEmphasis(e.target.checked)}
+          />
+        </CheckboxContainer>
       <Label htmlFor="tagId">Imagem (selecione um arquivo jpg, jpeg ou png):</Label>
       <StyledInput
           name="image"
@@ -303,3 +329,16 @@ const StyledLink = styled.div`
     font-weight: 900;
   }
 `
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+
+const CheckboxLabel = styled.label`
+  margin-right: 8px;
+`;
+
+const StyledCheckbox = styled.input`
+  margin-right: 8px;
+`;
