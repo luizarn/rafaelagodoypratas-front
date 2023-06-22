@@ -3,14 +3,12 @@ import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import { useContext, useState } from "react"
 import UserContext from "../../contexts/UserContext.jsx"
-import { useCart } from "../../contexts/Cartcontext.jsx"
 
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const { setUserData } = useContext(UserContext);
-  const { clearCart } = useCart();
 
   const navigate = useNavigate()
 
@@ -26,7 +24,6 @@ export default function LoginPage() {
       console.log(res.data)
       setUserData(res.data)
       navigate("/")
-      clearCart();
     })
     promise.catch(err => {
       alert(err.response.data.message)

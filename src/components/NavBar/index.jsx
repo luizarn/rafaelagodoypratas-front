@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import logo from "../../assets/images/white_logo.png"
 import { Link } from "react-router-dom"
 import useNameUser from '../../hooks/useNameUser';
-import { useCart } from '../../contexts/Cartcontext';
+import CartContext from '../../contexts/Cartcontext';
+import { useContext } from 'react';
 
 export default function NavBar() {
     const userName = useNameUser();
-    const { cartCount } = useCart();
+    const { cartCount } = useContext(CartContext);
 
     return (
           <StyleNavBar>
@@ -18,10 +19,12 @@ export default function NavBar() {
                 <Link to="/sign-in">
                   <ion-icon name="person-circle-outline"></ion-icon>
                 </Link>
+                <Link to='/carrinho'>
                 <CartIconWrapper>
                   <ion-icon name="bag-handle-outline"></ion-icon>
-                  {cartCount > 0 ? <CartItemCount>{cartCount}</CartItemCount> : null}
+                   {cartCount > 0 ? <CartItemCount>{cartCount}</CartItemCount> : null}
                 </CartIconWrapper>
+                </Link>
               </ContainerIcons>
               {userName ? <p>Olá, {userName}! </p> : ""}
             </ContainerNameandIcons>
@@ -90,19 +93,19 @@ const CartIconWrapper = styled.div`
   position: relative;
 `;
 
-
 const CartItemCount = styled.span`
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -9px;
+  right: 0px;
+  left: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
   font-size: 12px;
   font-weight: bold;
 `

@@ -2,15 +2,15 @@ import  { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useCart } from '../../contexts/Cartcontext';
 import 'animate.css/animate.min.css'; 
+import useToken from '../../hooks/useToken';
 
 export default function ListProduct() {
   const { titleProduct } = useParams();
   const [product, setProduct] = useState({});
   const [amount, setAmount] = useState(1);
   const [clickToBuy, setClickTobuy] = useState(false)
-  const { addToCart } = useCart();
+  const token = useToken();
 
   const handleDecrement = () => {
     if (amount > 1) {
@@ -20,6 +20,7 @@ export default function ListProduct() {
 
   const handleIncrement = () => {
     if (product?.quantity < 1) return;
+    if (product?.quantity <= amount) return alert('Não é possível adicionar maior quantidade do produto por conta do estoque');
     setAmount(amount + 1);
   };
 
@@ -33,12 +34,38 @@ export default function ListProduct() {
       .catch((err) => console.log(err));
   }, []);
 
-  const addTocart = () => {
-    const newCartItem = { ...product, quantity: amount };
-    addToCart(newCartItem);
-    setAmount(1);
+  async function addTocart(){
     setClickTobuy(true)
-  };
+    const body = {productId: product.id, quantity: amount}
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/cart`,
+        body,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+    
+      const result = await axios.put(
+        `${import.meta.env.VITE_API_BASE_URL}/produtos/${product.id}`,
+        {quantityChange: -amount},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response);
+      console.log(response.data);
+      console.log(result.data);
+    } catch (err) {
+      alert(err.response.data.message);
+    }
+  }
 
 
   return (

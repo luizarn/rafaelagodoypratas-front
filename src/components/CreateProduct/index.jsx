@@ -52,7 +52,7 @@ export default function CreateProduct({ setAddSelected }) {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/produtos`,
+        `${import.meta.env.VITE_API_BASE_URL}/admin/produtos`,
         formData,
         {
           headers: {

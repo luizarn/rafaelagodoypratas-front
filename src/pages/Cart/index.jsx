@@ -3,11 +3,15 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
+import CartContext from '../../contexts/Cartcontext';
+import { useContext } from 'react';
 
 export default function Cart() {
   const [productsInCart, setProductsInCart] = useState([]);
   const [attProducts, setAttProducts] = useState(false);
+  const { setCartCount } = useContext(CartContext);
   const token = useToken();
+  
 
   useEffect(() => {
     const response = axios.get(
@@ -22,13 +26,14 @@ export default function Cart() {
     response
       .then((res) => {
         setProductsInCart(res.data);
-        console.log(res.data);
+        console.log(res.data)
+        setCartCount(res.data.length);
         setAttProducts(false);
       })
       .catch((err) => console.log(err));
   }, [attProducts]);
 
-  async function deleteProduct(id) {
+  async function deleteProduct(id, productId, quantity ) {
     try {
       console.log(id);
       if (confirm('Confirma a remoção deste produto?')) {
@@ -40,11 +45,29 @@ export default function Cart() {
             },
           }
         );
+
+         await axios.put(
+          `${import.meta.env.VITE_API_BASE_URL}/produtos/${productId}`,
+          {quantityChange: quantity},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setAttProducts(true);
       }
     } catch (err) {
       alert(err.response.data.message);
     }
+  }
+
+  function calculateGrandTotal() {
+    let grandTotal = 0;
+    for (const product of productsInCart) {
+      grandTotal += parseFloat(product.product.price) * product.quantity;
+    }
+    return grandTotal.toFixed(2);
   }
 
   return (
@@ -72,21 +95,30 @@ export default function Cart() {
                   </Link>
                   <ContainerInfos>
                     <Link to={`/produtos/${encodeURIComponent(p.product.title)}`} style={{ textDecoration: 'none' }}>
-                      <h1>{p.product.title}</h1>
+                      <h1><span>{p.product.title}</span></h1>
                     </Link>
                     <h2>R$ {parseFloat(p.product.price).toFixed(2).replace('.', ',')}</h2>
                     <br></br>
                     <h1>
-                      ou <span>3x</span> de <span>R$ {parseFloat(p.product.price / 3).toFixed(2).replace('.', ',')}</span> sem juros
+                      <span>Quantidade:</span> {p.quantity}
                     </h1>
+                    <br></br>
+                    <span>Total:</span> <h4>R$ {parseFloat(p.product.price * p.quantity).toFixed(2).replace('.', ',')}</h4>
                   </ContainerInfos>
                 </ImageInfo>
               </div>
               <div>
-                <ion-icon onClick={() => deleteProduct(p.id)} name="trash-outline"></ion-icon>
+                <ion-icon onClick={() => deleteProduct(p.id, p.productId, p.quantity)} name="trash-outline"></ion-icon>
               </div>
             </UnicItem>
           ))}
+                  <p>Total do carrinho: R$ {Number(calculateGrandTotal()).toFixed(2).replace('.', ',')}</p>
+                  <ContainerButtons>
+  <Link to='/' style={{ textDecoration: 'none' }}>
+           <StyleButton style={{background:"#C0C0C0"}}>CONTINUAR COMPRANDO</StyleButton> 
+           </Link>
+            <StyleButton style={{background: "#00FF7F"}}>FINALIZAR COMPRA</StyleButton>
+   </ContainerButtons>
         </>
       )}
     </ProductsContainer>
@@ -114,23 +146,27 @@ const ContainerInfos = styled.div`
   font-family: 'Ubuntu Mono';
   margin-bottom: 20px;
   h2 {
-    font-weight: 800;
-    color: #6cbfa6;
-    font-size: 25px;
+    font-size: 20px;
   }
   h1 {
     font-weight: 500;
     font-size: 18px;
     margin-bottom: 10px;
     line-height: 18px;
+    color: #262626;
   }
   span {
     font-weight: 900;
   }
+  h4{
+    font-weight: 800;
+    color: #6cbfa6;
+    font-size: 20px;
+  }
 `;
 
 const ProductsContainer = styled.div`
-  width: 70%;
+  width: 80%;
   margin:80px auto;
   min-height: 450px;
   display: flex;
@@ -173,16 +209,38 @@ const StyledButton = styled.button`
 `;
 
 const UnicItem = styled.div`
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
   margin-top: 30px;
+  margin-bottom: 20px;
   border-bottom: 3px solid #dbdbdb;
   display: flex;
   align-items: center;
+  justify-content:space-around;
   ion-icon {
     width: 30px;
     height: 80px;
     border-radius: 25px;
-    margin-left: 200px;
   }
 `;
+
+const StyleButton = styled.button`
+width:300px;
+  height: 50px;
+  display: flex;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 23px;
+  text-align: center;
+  color:#ffffff;
+  `
+
+const ContainerButtons = styled.div`
+  margin-top: 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+`
