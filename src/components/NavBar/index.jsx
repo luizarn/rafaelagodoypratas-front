@@ -2,29 +2,35 @@ import styled from 'styled-components';
 import logo from "../../assets/images/white_logo.png"
 import { Link } from "react-router-dom"
 import useNameUser from '../../hooks/useNameUser';
+import CartContext from '../../contexts/Cartcontext';
+import { useContext } from 'react';
 
 export default function NavBar() {
     const userName = useNameUser();
+    const { cartCount } = useContext(CartContext);
 
     return (
-                <StyleNavBar>
-                    <img src={logo} alt="Logotipo" />
-                    <input type="text" placeholder="Olá, o que você está buscando?" />
-                    <ContainerNameandIcons>
-                        <ContainerIcons>
-                            <ion-icon name="chatbubbles-outline"></ion-icon>
-                            <Link to="/sign-in">
-                                <ion-icon name="person-circle-outline"></ion-icon>
-                            </Link>
-                            <ion-icon name="bag-handle-outline"></ion-icon>
-                        </ContainerIcons>
-                        {userName ? <p>Olá, {userName}! </p> : ""}
-                    </ContainerNameandIcons>
-                </StyleNavBar>
-        
- 
-    )
-}
+          <StyleNavBar>
+            <img src={logo} alt="Logotipo" />
+            <input type="text" placeholder="Olá, o que você está buscando?" />
+            <ContainerNameandIcons>
+              <ContainerIcons>
+                <ion-icon name="chatbubbles-outline"></ion-icon>
+                <Link to="/sign-in">
+                  <ion-icon name="person-circle-outline"></ion-icon>
+                </Link>
+                <Link to='/carrinho'>
+                <CartIconWrapper>
+                  <ion-icon name="bag-handle-outline"></ion-icon>
+                   {cartCount > 0 ? <CartItemCount>{cartCount}</CartItemCount> : null}
+                </CartIconWrapper>
+                </Link>
+              </ContainerIcons>
+              {userName ? <p>Olá, {userName}! </p> : ""}
+            </ContainerNameandIcons>
+          </StyleNavBar>
+      );
+    }
 
 const StyleNavBar = styled.div`
 width: 100%;
@@ -59,8 +65,8 @@ img{
 const ContainerIcons = styled.div`
     display: flex;
     ion-icon{
-        width: 25px;
-        height: 24px;
+        width: 35px;
+        height: 34px;
         margin-right: 30px;
         color: #6CBFA6;
     }
@@ -81,4 +87,25 @@ align-items: center;
     text-align: center;
     color: #6CBFA6;
     }
+`
+
+const CartIconWrapper = styled.div`
+  position: relative;
+`;
+
+const CartItemCount = styled.span`
+  position: absolute;
+  top: -9px;
+  right: 0px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: black;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
 `

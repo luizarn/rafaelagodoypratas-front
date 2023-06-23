@@ -28,7 +28,7 @@ export default function SignUpPage() {
         const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/users`, body)
         console.log(response)
         console.log(response.data)
-        navigate("/")
+        navigate("/sign-in")
       } catch (err) {
         alert(err.response.data.message)
         setName("")

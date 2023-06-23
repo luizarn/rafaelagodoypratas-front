@@ -68,7 +68,7 @@ export default function EditProduct({ setAttProducts, setEditSelected, selectedP
     
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/produtos/${selectedProductId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/admin/produtos/${selectedProductId}`,
         requestBody,
         {
           headers: {
