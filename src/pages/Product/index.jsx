@@ -1,5 +1,5 @@
 import  { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import 'animate.css/animate.min.css'; 
@@ -13,6 +13,7 @@ export default function ListProduct() {
   const [amount, setAmount] = useState(1);
   const [clickToBuy, setClickTobuy] = useState(false)
   const token = useToken();
+  const navigate = useNavigate();
   const { setCartCount, cartCount } = useContext(CartContext);
 
   const handleDecrement = () => {
@@ -38,6 +39,9 @@ export default function ListProduct() {
   }, []);
 
   async function addTocart(){
+    if(!token){
+      navigate('/sign-in')
+    }
     setClickTobuy(true)
     const body = {productId: product.id, quantity: amount}
     try {
@@ -90,7 +94,7 @@ export default function ListProduct() {
           <ContainerButtonsFirst>
           <ContainerButtonsSecond>
             <AddButton disabled={product?.quantity < 1}>
-              <h4 onClick={handleDecrement}>--</h4>
+              <h4 onClick={handleDecrement}>-</h4>
               {amount}
               <h4 onClick={handleIncrement}>+</h4>
             </AddButton>
@@ -248,6 +252,7 @@ const AddButton = styled.button`
   width: 150px;
   display: flex;
   justify-content: space-between;
+  align-items:center;
   border-radius: 8px;
   border: 3px solid rgba(0, 0, 0, 0.3);
   background-color: white;
@@ -265,6 +270,7 @@ const AddButton = styled.button`
   h4 {
     font-weight: 900;
     font-size: 28px;
+    text-align:center;
   }
 `;
 

@@ -5,5 +5,5 @@ import UserContext from '../contexts/UserContext';
 export default function useNameUser() {
   const { userData: user } = useContext(UserContext);
 
-  return user.user.name;
+  return user?.user?.name || '';
 }
