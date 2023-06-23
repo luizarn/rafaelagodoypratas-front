@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
 import CartContext from '../../contexts/Cartcontext';
 import { useContext } from 'react';
@@ -10,7 +10,10 @@ export default function Cart() {
   const [productsInCart, setProductsInCart] = useState([]);
   const [attProducts, setAttProducts] = useState(false);
   const { setCartCount } = useContext(CartContext);
+  const [idCard, setIdCard] = useState(null)
   const token = useToken();
+  const navigate = useNavigate()
+  let grandTotal = 0;
   
 
   useEffect(() => {
@@ -29,6 +32,7 @@ export default function Cart() {
         console.log(res.data)
         setCartCount(res.data.length);
         setAttProducts(false);
+        setIdCard(res.data[0].cartId)
       })
       .catch((err) => console.log(err));
   }, [attProducts]);
@@ -63,12 +67,28 @@ export default function Cart() {
   }
 
   function calculateGrandTotal() {
-    let grandTotal = 0;
     for (const product of productsInCart) {
       grandTotal += parseFloat(product.product.price) * product.quantity;
     }
     return grandTotal.toFixed(2);
   }
+
+async function addToPurchase(){
+try{
+  const result = await axios.post(
+    `${import.meta.env.VITE_API_BASE_URL}/purchase`,
+    {total: grandTotal, cartId: idCard},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    navigate(`/checkout/${result.data.id}`)
+} catch (err) {
+  alert(err.response.data.message);
+}
+ 
+}
 
   return (
     <ProductsContainer>
@@ -117,7 +137,7 @@ export default function Cart() {
   <Link to='/' style={{ textDecoration: 'none' }}>
            <StyleButton style={{background:"#C0C0C0"}}>CONTINUAR COMPRANDO</StyleButton> 
            </Link>
-            <StyleButton style={{background: "#00FF7F"}}>FINALIZAR COMPRA</StyleButton>
+            <StyleButton style={{background: "#00FF7F"}} onClick={() => addToPurchase()}>FINALIZAR COMPRA</StyleButton>
    </ContainerButtons>
         </>
       )}

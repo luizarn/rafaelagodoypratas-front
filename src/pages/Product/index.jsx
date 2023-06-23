@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import 'animate.css/animate.min.css'; 
 import useToken from '../../hooks/useToken';
+import { useContext } from 'react';
+import CartContext from '../../contexts/Cartcontext';
 
 export default function ListProduct() {
   const { titleProduct } = useParams();
@@ -11,6 +13,7 @@ export default function ListProduct() {
   const [amount, setAmount] = useState(1);
   const [clickToBuy, setClickTobuy] = useState(false)
   const token = useToken();
+  const { setCartCount, cartCount } = useContext(CartContext);
 
   const handleDecrement = () => {
     if (amount > 1) {
@@ -58,7 +61,7 @@ export default function ListProduct() {
           },
         }
       );
-
+       setCartCount (cartCount + 1)
       console.log(response);
       console.log(response.data);
       console.log(result.data);
