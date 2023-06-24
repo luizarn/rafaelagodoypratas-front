@@ -8,6 +8,7 @@ import axios from "axios";
 import { useState } from "react";
 import CreateProduct from "../../components/CreateProduct";
 import EditProduct from "../../components/EditProduct";
+import useToken from "../../hooks/useToken";
 
 export default function Admin() {
   const [products, setProducts] = useState(null);
@@ -16,12 +17,17 @@ export default function Admin() {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [selectedProductTitle, setSelectedProductTitle] = useState(null);
   const [attProducts, setAttProducts] = useState(false);
+  const token = useToken();
 
 const userName = useNameUser();
 console.log(selectedProductTitle)
 
 useEffect(() => {
-  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/products`);
+  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/products`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   response.then((res) => {
     setProducts(res.data);
     setAttProducts(false)
