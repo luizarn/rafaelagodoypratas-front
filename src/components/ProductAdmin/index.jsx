@@ -18,7 +18,7 @@ async function deleteProduct(){
     try {
       if (confirm("Tem certeza de que deseja excluir este produto?"))
       await axios.delete(
-        `${import.meta.env.VITE_API_BASE_URL}/admin/produtos/${productId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/products/admin/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

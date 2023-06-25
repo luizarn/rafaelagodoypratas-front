@@ -23,13 +23,13 @@ export default function CreateProduct({ setAddSelected }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
+    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/categories`);
     response.then((res) => {
       setCategories(res.data);
     });
     response.catch((err) => console.log(err));
 
-    const result = axios.get(`${import.meta.env.VITE_API_BASE_URL}/tags`);
+    const result = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/tags`);
     result.then((res) => {
       setTags(res.data);
     });
@@ -52,7 +52,7 @@ export default function CreateProduct({ setAddSelected }) {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/admin/produtos`,
+        `${import.meta.env.VITE_API_BASE_URL}/products/admin`,
         formData,
         {
           headers: {

@@ -23,7 +23,7 @@ const userName = useNameUser();
 console.log(selectedProductTitle)
 
 useEffect(() => {
-  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/products`, {
+  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/admin`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

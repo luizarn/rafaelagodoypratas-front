@@ -30,7 +30,7 @@ export default function ListProduct() {
 
   useEffect(() => {
     const decodedTitle = decodeURIComponent(titleProduct);
-    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/produtos/${encodeURIComponent(decodedTitle)}`);
+    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/category/${encodeURIComponent(decodedTitle)}`);
     response
       .then((res) => {
         setProduct(res.data);
@@ -57,7 +57,7 @@ export default function ListProduct() {
 
     
       const result = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/produtos/${product.id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/products/updateByCart/${product.id}`,
         {quantityChange: -amount},
         {
           headers: {

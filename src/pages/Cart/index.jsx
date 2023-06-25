@@ -51,7 +51,7 @@ export default function Cart() {
         );
 
          await axios.put(
-          `${import.meta.env.VITE_API_BASE_URL}/produtos/${productId}`,
+          `${import.meta.env.VITE_API_BASE_URL}/products/updateByCart/${productId}`,
           {quantityChange: quantity},
           {
             headers: {

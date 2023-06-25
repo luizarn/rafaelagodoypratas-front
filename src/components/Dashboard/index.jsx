@@ -28,7 +28,7 @@ export default function Dashboard() {
 
 
 useEffect(() => {
-  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
+  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/categories`);
   response.then((res) => {
     setOptions(res.data);
     console.log(res.data)

@@ -16,24 +16,26 @@ export default function EditProduct({ setAttProducts, setEditSelected, selectedP
   const [quantity, setQuantity] = useState('');
   const [image, setImage] = useState('');
   const [imageDb, setImageDb] = useState('');
+  const [launch, setLaunch] = useState(false);
+  const [emphasis, setEmphasis] = useState(false);
   const token = useToken();
 
   console.log(image)
   useEffect(() => {
     console.log(selectedProductTitle)
-    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
+    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/categories`);
     response.then((res) => {
       setCategories(res.data);
     });
     response.catch((err) => console.log(err));
 
-    const result = axios.get(`${import.meta.env.VITE_API_BASE_URL}/tags`);
+    const result = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/tags`);
     result.then((res) => {
       setTags(res.data);
     });
     result.catch((err) => console.log(err));
 
-    const resultInformationsProduct = axios.get(`${import.meta.env.VITE_API_BASE_URL}/produtos/${selectedProductTitle}`);
+    const resultInformationsProduct = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/category/${selectedProductTitle}`);
     resultInformationsProduct.then((res) => {
       console.log(res.data)
       setTitle(res.data.title);
@@ -43,6 +45,8 @@ export default function EditProduct({ setAttProducts, setEditSelected, selectedP
       setImage(res.data.publicUrl)
       setSelectedCategory(res.data.categoryId)
       setSelectedTag(res.data.tagId)
+      setLaunch(res.data.launch)
+      setEmphasis(res.data.emphasis)
     });
     resultInformationsProduct.catch((err) => console.log(err));
   }, []);
@@ -61,6 +65,8 @@ export default function EditProduct({ setAttProducts, setEditSelected, selectedP
       quantity: parseInt(quantity),
       categoryId: parseInt(category),
       tagId: parseInt(tag),
+      launch,
+      emphasis,
       ...(imageDb && { photo: imageDb })
       }
     };
@@ -68,7 +74,7 @@ export default function EditProduct({ setAttProducts, setEditSelected, selectedP
     
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/admin/produtos/${selectedProductId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/products/admin/${selectedProductId}`,
         requestBody,
         {
           headers: {
@@ -160,6 +166,27 @@ export default function EditProduct({ setAttProducts, setEditSelected, selectedP
               </option>
             ))}
           </StyledSelect>
+          <CheckboxContainer>
+          <CheckboxLabel htmlFor="launch">
+            Lançamento:
+          </CheckboxLabel>
+          <StyledCheckbox
+            type="checkbox"
+            id="launch"
+            checked={launch}
+            onChange={(e) => setLaunch(e.target.checked)}
+          />
+
+          <CheckboxLabel htmlFor="emphasis">
+            Em Destaque:
+          </CheckboxLabel>
+          <StyledCheckbox
+            type="checkbox"
+            id="emphasis"
+            checked={emphasis}
+            onChange={(e) => setEmphasis(e.target.checked)}
+          />
+        </CheckboxContainer>
           <Label htmlFor="tagId">Imagem (selecione um arquivo jpg, jpeg ou png):</Label>
           <StyledInput
             name="image"
@@ -330,3 +357,16 @@ const StyledLink = styled.div`
     font-weight: 900;
   }
 `
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+
+const CheckboxLabel = styled.label`
+  margin-right: 8px;
+`;
+
+const StyledCheckbox = styled.input`
+  margin-right: 8px;
+`;

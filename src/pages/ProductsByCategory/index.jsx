@@ -8,7 +8,7 @@ export default function ListProductsByCategory() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/${category}`);
+    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/${category}`);
     response
       .then((res) => {
         setProducts(res.data);
