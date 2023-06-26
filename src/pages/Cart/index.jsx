@@ -51,7 +51,7 @@ export default function Cart() {
         );
 
          await axios.put(
-          `${import.meta.env.VITE_API_BASE_URL}/produtos/${productId}`,
+          `${import.meta.env.VITE_API_BASE_URL}/products/updateByCart/${productId}`,
           {quantityChange: quantity},
           {
             headers: {
@@ -93,7 +93,7 @@ try{
   return (
     <ProductsContainer>
       {!productsInCart || productsInCart.length === 0 ? (
-        <div style={{ height: '350px' }}>
+        <Container>
           <p>Carrinho de Compras</p> <br></br> <br></br>
           <h3>
             Seu carrinho está vazio. <br></br> <br></br>
@@ -102,7 +102,7 @@ try{
           <Link to="/" style={{ textDecoration: 'none' }}>
             <StyledButton>Escolher Produtos</StyledButton>
           </Link>
-        </div>
+        </Container>
       ) : (
         <>
           <p>Carrinho de Compras</p> <br></br>
@@ -183,6 +183,17 @@ const ContainerInfos = styled.div`
     color: #6cbfa6;
     font-size: 20px;
   }
+  @media screen and (max-width: 600px) {
+        h2 {
+          font-size:16px;
+        }
+        h4 {
+          font-size:16px;
+        }
+        h1{
+          font-size:16px;
+        }
+    }
 `;
 
 const ProductsContainer = styled.div`
@@ -201,6 +212,11 @@ const ProductsContainer = styled.div`
   h3 {
     font-size: 18px;
   }
+  @media screen and (max-width: 600px) {
+       p{
+          font-size:20px;
+        }
+    }
 `;
 
 const StyledButton = styled.button`
@@ -226,6 +242,10 @@ const StyledButton = styled.button`
   margin-left: 20px;
   text-decoration: none;
   margin-top: 30px;
+  @media screen and (max-width: 600px) {
+        width: 80%;
+        height: 40px;
+    }
 `;
 
 const UnicItem = styled.div`
@@ -256,6 +276,11 @@ width:300px;
   line-height: 23px;
   text-align: center;
   color:#ffffff;
+   @media screen and (max-width: 600px) {
+        width: 200px;
+        height: 29px;
+        font-size: 12px;
+    }
   `
 
 const ContainerButtons = styled.div`
@@ -263,4 +288,20 @@ const ContainerButtons = styled.div`
   display:flex;
   align-items:center;
   justify-content:center;
+  @media screen and (max-width: 600px) {
+        flex-direction:column;
+    }
+`
+const Container = styled.div`
+   height: 350px;
+   @media screen and (max-width: 600px) {
+    width: 95%;
+    margin: 0 auto;
+        p{
+          font-size: 16px;
+        }
+        h3{
+          font-size: 16px;
+        }
+    }
 `

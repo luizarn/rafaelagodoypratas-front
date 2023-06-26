@@ -49,19 +49,19 @@ export default function Checkout() {
         <ContainerUser>
         <img src={logo} alt="Logotipo" />
         <p>Informações</p> 
-        <div style={{marginTop: '35px', borderBottom: '0.5px solid #dbdbdb', marginBottom: '35px'} }>
+        <InfosUser>
         <h4><span>{(userName).toUpperCase()} {(surname).toUpperCase()}</span> ({(cpf).replace(
   /^(\d{3})(\d{3})(\d{3})(\d{2})$/,
   '$1.$2.$3-$4'
 )})</h4>
         <h4>{email}</h4>
         <h4>{phone}</h4>
-        </div>
+        </InfosUser>
        <p> Entrega</p> 
 <StyleButtonAdress>Adicionar Novo Endereço</StyleButtonAdress>
 <StyledButton>Salvar e ir para pagamento</StyledButton>
 <StyledLink to="/">
-     Quer adicionar mais itens ao carrinho? <span> Retorne a página de produtos</span>
+     Quer adicionar mais itens ao carrinho? <span> Retorne a página de produtos clicando aqui</span>
       </StyledLink>
         </ContainerUser>
       <ContainerInfos>
@@ -121,6 +121,9 @@ const ImageInfo = styled.div`
 `
 const ContainerInfos = styled.div`
   width:30%;
+  @media screen and (max-width: 600px) {
+    width: 100%;
+}
 `;
 
 const Container = styled.div`
@@ -139,6 +142,9 @@ const Container = styled.div`
     margin-top: 15px;
     color: black;
   }
+  @media screen and (max-width: 600px) {
+    flex-direction:column;
+}
 `;
 
 const StyleButton = styled.div`
@@ -174,6 +180,14 @@ h4{
 }
 span{
 font-weight:700;
+@media screen and (max-width: 600px) {
+    width: 100%;
+    padding-right:1px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
 }
 `;
 
@@ -187,6 +201,9 @@ border-radius: 5px;
 font-size: 18px;
 margin-top: 35px;
 margin-bottom: 20px;
+@media screen and (max-width: 600px) {
+ font-size: 14px;
+}
   `
 const StyledButton = styled.button`
 background-color: #00FF7F;
@@ -218,4 +235,29 @@ margin-top: 20px;
   span{
     font-weight: 700;
   }
+  @media screen and (max-width: 600px) {
+    width: 100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    span{
+      margin-top:15px;
+      margin-bottom: 15px;
+    }
+}
+`
+
+const InfosUser = styled.div`
+margin-top: 35px;
+border-bottom: 0.5px solid #dbdbdb;
+margin-bottom: 35px;
+ @media screen and (max-width: 600px) {
+    width: 100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
 `

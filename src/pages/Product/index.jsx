@@ -12,8 +12,8 @@ export default function ListProduct() {
   const [product, setProduct] = useState({});
   const [amount, setAmount] = useState(1);
   const [clickToBuy, setClickTobuy] = useState(false)
-  const token = useToken();
   const navigate = useNavigate();
+  const token = useToken();
   const { setCartCount, cartCount } = useContext(CartContext);
 
   const handleDecrement = () => {
@@ -30,7 +30,7 @@ export default function ListProduct() {
 
   useEffect(() => {
     const decodedTitle = decodeURIComponent(titleProduct);
-    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/produtos/${encodeURIComponent(decodedTitle)}`);
+    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/category/${encodeURIComponent(decodedTitle)}`);
     response
       .then((res) => {
         setProduct(res.data);
@@ -57,7 +57,7 @@ export default function ListProduct() {
 
     
       const result = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/produtos/${product.id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/products/updateByCart/${product.id}`,
         {quantityChange: -amount},
         {
           headers: {
@@ -142,13 +142,12 @@ const ContainerStyle = styled.div`
     border-radius: 25px;
     width: 473px;
     height: 600px;
-    overflow: hidden;
   }
 
   .product-image img {
     display: block;
     width: 100%;
-    height: auto;
+    height: 600px;
   }
 
   .sold-out-label {
@@ -165,6 +164,21 @@ const ContainerStyle = styled.div`
     visibility: ${(props) => (props.isSoldOut ? 'visible' : 'hidden')};
     transition: opacity 0.3s, visibility 0.3s;
   }
+
+  @media screen and (max-width: 600px) {
+    flex-direction:column;
+    .product-image {
+      width: 130px;
+      height: 175px;
+    }
+
+    .product-image img {
+      width: 250px;
+      height: 295px;
+      border-radius: 25px;
+    }
+  }
+
 `;
 
 
@@ -207,9 +221,29 @@ const ContainerInfos = styled.div`
     width: 30px;
     height: 27px;
   }
+  @media screen and (max-width: 600px) {
+    margin-top: 120px;
+    h2 {
+    font-size:14px;
+    margin-top: 5px;
+  }
+  h1 {
+    font-size:14px;
+    margin-top: 5px;
+    margin-bottom:0;
+  }
+    h3 {
+    font-size:14px;
+    margin-top: 15px;
+  }
+}
 `;
 
 const ProductsContainer = styled.div`
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
   width: 80%;
   margin: 0 auto;
   min-height: 450px;
@@ -245,6 +279,10 @@ const StyledButton = styled.button`
   border-radius: 30px;
   color: #ffffff;
   margin-left: 20px;
+  @media screen and (max-width: 600px) {
+    width:120px;
+    font-size:12px;
+}
 `;
 
 const AddButton = styled.button`
@@ -272,6 +310,15 @@ const AddButton = styled.button`
     font-size: 28px;
     text-align:center;
   }
+  @media screen and (max-width: 600px) {
+    width: 100px;
+    height:40px;
+    h4 {
+    font-size:14px;
+    padding:0;
+    justify-content:space-around;
+  }
+} 
 `;
 
 const ContainerButtonsSecond = styled.div`
@@ -284,6 +331,9 @@ margin-top: 60px;
   flex-direction: column;
   align-items: center;
   margin-bottom: 50px;
+  @media screen and (max-width: 600px) {
+  margin-top:10px;
+}
 `;
 
 const StyledInput = styled.input`
@@ -313,6 +363,9 @@ const StyleButtonCep = styled.button`
   background: #ffffff;
   border: 1px solid #ace4d3;
   color: rgba(108, 191, 166, 0.9);
+  @media screen and (max-width: 600px) {
+   width: 60%;
+}
 `;
 
 const DescriptionText = styled.div`
@@ -322,6 +375,9 @@ margin: 0 auto;
   line-height: 30px;
   margin-bottom: 20px;
   margin-top: 10px;
+  @media screen and (max-width: 600px) {
+   font-size: 12px;
+}
 `
 
 const StyledButtonCart = styled.button`
@@ -349,4 +405,7 @@ margin-top: 40px;
   &.animate__pulse {
     animation: animate__pulse 10s;
   }
+  @media screen and (max-width: 600px) {
+   width: 100%;
+}
 `;

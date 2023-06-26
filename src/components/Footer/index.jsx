@@ -33,6 +33,9 @@ box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 3px;
 box-sizing: border-box;
 padding: 30px 40px 15px 5px;
+@media screen and (max-width: 600px) {
+        margin-top: 100px;
+    }
 `
 
 const ContainerInfos = styled.div`

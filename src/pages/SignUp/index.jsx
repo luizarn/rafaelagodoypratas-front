@@ -171,6 +171,9 @@ const StyledInput = styled.input`
     font-size: 12px;
     line-height: 23px;
   }
+  @media screen and (max-width: 800px) {
+      width: 60%;
+  }
 `
 
 const StyledButton = styled.button`

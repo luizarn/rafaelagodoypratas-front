@@ -94,11 +94,6 @@ const Container = styled.div`
     border-radius: 50%; 
     background-color: #6ad0af;
   }
-  @media screen and (min-width: 800px) {
-    img {
-      margin-top: 100px;
-    }
-  }
 `
 
 const StyledForm = styled.form`
@@ -127,6 +122,10 @@ const StyledInput = styled.input`
     font-size: 12px;
     line-height: 23px;
   }
+  @media screen and (max-width: 800px) {
+      width: 50%;
+  }
+  
 `
 
 const StyledButton = styled.button`
