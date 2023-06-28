@@ -28,7 +28,7 @@ export default function Dashboard() {
 
 
 useEffect(() => {
-  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
+  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/categories`);
   response.then((res) => {
     setOptions(res.data);
     console.log(res.data)
@@ -155,7 +155,11 @@ const OptionsOverlay = styled.div`
   border-radius: 3px;
   z-index: 2;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  @media screen and (max-width: 600px) {
+    width: auto;
+    flex-wrap: wrap;
+}
 `;
 
 
@@ -216,6 +220,9 @@ const OptionsText = styled.p`
   font-size: 20px;
   color: #ffffff;
   margin: 14px;
+  @media screen and (max-width: 600px) {
+   font-size:11px;
+}
 `;
 
 const GoToPageAdminLink = styled(Link)`

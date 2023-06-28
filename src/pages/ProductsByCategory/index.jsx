@@ -8,7 +8,7 @@ export default function ListProductsByCategory() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/${category}`);
+    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/${category}`);
     response
       .then((res) => {
         setProducts(res.data);
@@ -53,6 +53,9 @@ const ContainerStyle = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 50px;
+  @media screen and (max-width: 600px) {
+    width: 130px;
+}
 `;
 
 const ImageInfo = styled.div`
@@ -62,6 +65,13 @@ const ImageInfo = styled.div`
     height: 350px;
     border-radius: 25px;
   }
+  @media screen and (max-width: 600px) {
+    img {
+    width: 125px;
+    height: 175px;
+    border-radius: 25px;
+  }
+}
 `;
 
 const SoldOutLabel = styled.div`
@@ -99,6 +109,14 @@ const ContainerInfos = styled.div`
   span {
     font-weight: 900;
   }
+  @media screen and (max-width: 600px) {
+    h2 {
+    font-size:14px;
+  }
+  h1 {
+    font-size:14px;
+  }
+}
 `;
 
 const ProductsContainer = styled.div`

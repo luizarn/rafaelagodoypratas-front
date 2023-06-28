@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import useToken from '../../hooks/useToken';
 
 // eslint-disable-next-line react/prop-types
-export default function CreateProduct({ setAddSelected }) {
+export default function CreateProduct({ setAddSelected, setAttProducts }) {
   const [categories, setCategories] = useState([]);
   const [category, setSelectedCategory] = useState('');
   const [tags, setTags] = useState([]);
@@ -23,13 +23,14 @@ export default function CreateProduct({ setAddSelected }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
+    const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/categories`);
     response.then((res) => {
-      setCategories(res.data);
+      setCategories(res.data)
+      console.log(res.data);
     });
     response.catch((err) => console.log(err));
 
-    const result = axios.get(`${import.meta.env.VITE_API_BASE_URL}/tags`);
+    const result = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/tags`);
     result.then((res) => {
       setTags(res.data);
     });
@@ -52,19 +53,19 @@ export default function CreateProduct({ setAddSelected }) {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/admin/produtos`,
+        `${import.meta.env.VITE_API_BASE_URL}/products/admin/post`,
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+          },
       );
-
       console.log(response);
       console.log(response.data);
       navigate('/admin');
       setAddSelected(false);
+      setAttProducts(true)
     } catch (err) {
       alert(err.response.data.message);
       setTitle('');
@@ -192,7 +193,6 @@ export default function CreateProduct({ setAddSelected }) {
   )
 }
 
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -255,6 +255,9 @@ const StyledInput = styled.input`
     font-size: 12px;
     line-height: 23px;
   }
+  @media screen and (max-width: 600px) {
+    width: 80%;
+}
 `
 const StyledButton = styled.button`
   width: 30%;
@@ -276,6 +279,9 @@ const StyledButton = styled.button`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
   color: #FFFFFF;
+  @media screen and (max-width: 600px) {
+    width: 50%;
+}
 `
 
 const Label = styled.label`
@@ -313,6 +319,9 @@ const StyledSelect = styled.select`
     outline: none;
     box-shadow: 0 0 0 2px #6cbfa6;
   }
+  @media screen and (max-width: 600px) {
+    width: 80%;
+}
 `;
 
 const StyledLink = styled.div`

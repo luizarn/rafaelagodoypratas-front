@@ -8,6 +8,7 @@ import axios from "axios";
 import { useState } from "react";
 import CreateProduct from "../../components/CreateProduct";
 import EditProduct from "../../components/EditProduct";
+import useToken from "../../hooks/useToken";
 
 export default function Admin() {
   const [products, setProducts] = useState(null);
@@ -16,13 +17,20 @@ export default function Admin() {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [selectedProductTitle, setSelectedProductTitle] = useState(null);
   const [attProducts, setAttProducts] = useState(false);
+  const token = useToken();
 
 const userName = useNameUser();
 console.log(selectedProductTitle)
 
 useEffect(() => {
-  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/products`);
+  const response = axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/admin/list`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   response.then((res) => {
+    console.log(res.data)
     setProducts(res.data);
     setAttProducts(false)
   });
@@ -37,7 +45,8 @@ useEffect(() => {
         <img src={logo} alt="Logotipo" />
       </StyleNavBar>
       {addSelected ? (
-        <CreateProduct setAddSelected={setAddSelected} />
+        <CreateProduct setAddSelected={setAddSelected}
+        setAttProducts={setAttProducts} />
       ) : editSelected ? (
         <EditProduct 
         setEditSelected={setEditSelected}
@@ -85,6 +94,8 @@ useEffect(() => {
                   storage={p.quantity}
                   category={p.Category.title}
                   tag={p.Tag.title}
+                  emphasis={p.emphasis}
+                  launch={p.launch}
                 />
               ))
             )}
@@ -123,11 +134,11 @@ const Container = styled.div`
     text-align: right;
     color: #000000;
   }
-  /* @media screen and (min-width: 800px) {
-    img {
-      margin-top: 100px;
+  @media screen and (max-width: 600px) {
+    p{
+      font-size:10px;
     }
-  } */
+}
 `
 
 const GoToPageAdminLink = styled(Link)`

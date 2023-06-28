@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useToken from '../../hooks/useToken';
 import axios from 'axios';
 // eslint-disable-next-line react/prop-types
-export default function ListProductsEdition({ setAttProducts, setSelectedProductTitle, productId, setSelectedProductId, setEditSelected, image, title, description, price, storage, category, tag }) {
+export default function ListProductsEdition({ setAttProducts, setSelectedProductTitle, productId, setSelectedProductId, setEditSelected, image, title, description, price, storage, category, tag, launch, emphasis }) {
   const token = useToken();
 
   function handleEdit(){
@@ -18,7 +18,7 @@ async function deleteProduct(){
     try {
       if (confirm("Tem certeza de que deseja excluir este produto?"))
       await axios.delete(
-        `${import.meta.env.VITE_API_BASE_URL}/admin/produtos/${productId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/products/admin/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -42,6 +42,8 @@ async function deleteProduct(){
                         <h1><span>Estoque:</span> {storage}</h1>
                         <h1><span>Categoria:</span> {category}</h1>
                         <h1><span>Tag:</span> {tag}</h1>
+                        <h1><span>Em destaque:</span> {emphasis? 'sim' : 'não'}</h1>
+                        <h1><span>Em lançamentos:</span> {launch? 'sim' : 'não'}</h1>
                     </ContainerInfos>
                     </ImageInfo>
                         <ContainerIcons>

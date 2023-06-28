@@ -12,10 +12,10 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/emphasis`);
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/emphasis`);
         setProductsEmphasis(response.data);
 
-        const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/launch`);
+        const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/launch`);
         setProductsLaunch(result.data);
       } catch (error) {
         console.log(error);
@@ -162,6 +162,9 @@ const ContainerStyle = styled.div`
     visibility: ${(props) => (props.isSoldOut ? 'visible' : 'hidden')};
     transition: opacity 0.3s, visibility 0.3s;
   }
+  @media screen and (max-width: 600px) {
+    width: 130px;
+}
 `;
 
 const ContainerInfos = styled.div`
@@ -187,6 +190,14 @@ const ContainerInfos = styled.div`
   span {
     font-weight: 900;
   }
+  @media screen and (max-width: 600px) {
+    h2 {
+    font-size:14px;
+  }
+  h1 {
+    font-size:14px;
+  }
+}
 `;
 
 const ProductsContainer = styled.div`
@@ -207,6 +218,13 @@ const ImageInfo = styled.div`
     height: 350px;
     border-radius: 25px;
   }
+  @media screen and (max-width: 600px) {
+    img {
+    width: 125px;
+    height: 175px;
+    border-radius: 25px;
+  }
+}
 `;
 
 const SoldOutLabel = styled.div`

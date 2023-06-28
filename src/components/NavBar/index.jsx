@@ -61,6 +61,20 @@ img{
     width: 160px;
     height: 40px;
 }
+@media (max-width: 600px) {
+        height: 200px;
+        flex-direction: column;
+        justify-content: center;
+
+        input {
+            margin-top: 20px;
+        }
+
+        img {
+            width: 120px;
+            height: 40px;
+        }
+    }
 `
 const ContainerIcons = styled.div`
     display: flex;
@@ -69,6 +83,12 @@ const ContainerIcons = styled.div`
         height: 34px;
         margin-right: 30px;
         color: #6CBFA6;
+    }
+    @media screen and (max-width: 600px) {
+        ion-icon{
+          width: 30px;
+        height: 29px;
+        }
     }
 `
 const ContainerNameandIcons = styled.div`
